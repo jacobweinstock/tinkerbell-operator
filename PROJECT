@@ -1,0 +1,7 @@
+domain: tinkerbell.org
+repo: github.com/jacobweinstock/tinkerbell-operator
+resources:
+- group: tink
+  kind: Hardware
+  version: v1
+version: "2"

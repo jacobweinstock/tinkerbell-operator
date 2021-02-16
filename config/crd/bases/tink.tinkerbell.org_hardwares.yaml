@@ -1,0 +1,297 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: hardwares.tink.tinkerbell.org
+spec:
+  group: tink.tinkerbell.org
+  names:
+    kind: Hardware
+    listKind: HardwareList
+    plural: hardwares
+    singular: hardware
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: Hardware is the Schema for the hardwares API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: HardwareSpec defines the desired state of Hardware
+          properties:
+            data:
+              description: Foo is an example field of Hardware. Edit Hardware_types.go
+                to remove/update
+              properties:
+                id:
+                  type: string
+                metadata:
+                  properties:
+                    bonding_mode:
+                      type: integer
+                    custom:
+                      properties:
+                        preinstalled_operating_system_version:
+                          type: object
+                        private_subnets:
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - preinstalled_operating_system_version
+                      - private_subnets
+                      type: object
+                    facility:
+                      properties:
+                        facility_code:
+                          type: string
+                        plan_slug:
+                          type: string
+                        plan_version_slug:
+                          type: string
+                      required:
+                      - facility_code
+                      - plan_slug
+                      - plan_version_slug
+                      type: object
+                    instance:
+                      properties:
+                        crypted_root_password:
+                          type: string
+                        operating_system_version:
+                          properties:
+                            distro:
+                              type: string
+                            os_slug:
+                              type: string
+                            version:
+                              type: string
+                          required:
+                          - distro
+                          - os_slug
+                          - version
+                          type: object
+                        storage:
+                          properties:
+                            disks:
+                              items:
+                                properties:
+                                  device:
+                                    type: string
+                                  partitions:
+                                    items:
+                                      properties:
+                                        label:
+                                          type: string
+                                        number:
+                                          type: integer
+                                        size:
+                                          type: integer
+                                      required:
+                                      - label
+                                      - number
+                                      - size
+                                      type: object
+                                    type: array
+                                  wipe_table:
+                                    type: boolean
+                                required:
+                                - device
+                                - partitions
+                                - wipe_table
+                                type: object
+                              type: array
+                            filesystems:
+                              items:
+                                properties:
+                                  mount:
+                                    properties:
+                                      create:
+                                        properties:
+                                          options:
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - options
+                                        type: object
+                                      device:
+                                        type: string
+                                      format:
+                                        type: string
+                                      point:
+                                        type: string
+                                    required:
+                                    - create
+                                    - device
+                                    - format
+                                    - point
+                                    type: object
+                                required:
+                                - mount
+                                type: object
+                              type: array
+                          required:
+                          - disks
+                          - filesystems
+                          type: object
+                      required:
+                      - crypted_root_password
+                      - operating_system_version
+                      - storage
+                      type: object
+                    manufacturer:
+                      properties:
+                        id:
+                          type: string
+                        slug:
+                          type: string
+                      required:
+                      - id
+                      - slug
+                      type: object
+                    state:
+                      type: string
+                  required:
+                  - bonding_mode
+                  - custom
+                  - facility
+                  - instance
+                  - manufacturer
+                  - state
+                  type: object
+                network:
+                  properties:
+                    interfaces:
+                      items:
+                        properties:
+                          dhcp:
+                            properties:
+                              arch:
+                                type: string
+                              hostname:
+                                type: string
+                              ip:
+                                properties:
+                                  address:
+                                    type: string
+                                  gateway:
+                                    type: string
+                                  netmask:
+                                    type: string
+                                required:
+                                - address
+                                - gateway
+                                - netmask
+                                type: object
+                              lease_time:
+                                type: integer
+                              mac:
+                                type: string
+                              name_servers:
+                                items:
+                                  type: string
+                                type: array
+                              time_servers:
+                                items:
+                                  type: string
+                                type: array
+                              uefi:
+                                type: boolean
+                            required:
+                            - arch
+                            - hostname
+                            - ip
+                            - lease_time
+                            - mac
+                            - name_servers
+                            - time_servers
+                            - uefi
+                            type: object
+                          netboot:
+                            properties:
+                              allow_pxe:
+                                type: boolean
+                              allow_workflow:
+                                type: boolean
+                              ipxe:
+                                properties:
+                                  contents:
+                                    type: string
+                                  url:
+                                    type: string
+                                required:
+                                - contents
+                                - url
+                                type: object
+                              osie:
+                                properties:
+                                  base_url:
+                                    type: string
+                                  initrd:
+                                    type: string
+                                  kernel:
+                                    type: string
+                                required:
+                                - base_url
+                                - initrd
+                                - kernel
+                                type: object
+                            required:
+                            - allow_pxe
+                            - allow_workflow
+                            - ipxe
+                            - osie
+                            type: object
+                        required:
+                        - dhcp
+                        - netboot
+                        type: object
+                      type: array
+                  required:
+                  - interfaces
+                  type: object
+              required:
+              - id
+              - metadata
+              - network
+              type: object
+          required:
+          - data
+          type: object
+        status:
+          description: HardwareStatus defines the observed state of Hardware
+          properties:
+            phase:
+              description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                of cluster Important: Run "make" to regenerate code after modifying
+                this file'
+              type: string
+          type: object
+      type: object
+  version: v1
+  versions:
+  - name: v1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
